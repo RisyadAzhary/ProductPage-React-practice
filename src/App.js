@@ -1,46 +1,17 @@
 import "./App.css";
+import ReviewsItem from "./Reviews";
+import propTypes from "prop-types";
 
 function App() {
 	return (
 		<div className="ParentBox">
 			<PhotoProduct />
-			<ProductInfo isDiscount="yes" name="Razer Blackwidow"category="Mechanical keyboard"/>
-			< ReviewItems />
-		</div>
-	);
-}
-
-function ReviewItems() {
-	const users = [
-		{
-			id: 1,
-			name: "Gajel crozz",
-			review: "bagus tp salah beliiiii, ada yg minat? ",
-		},
-		{
-			id: 2,
-			name: "AA utap",
-			review: "mantap gan",
-		},
-		{
-			id: 3,
-			name: "ngab berti",
-			review: "mantab ngab",
-		},
-	];
-	const listReview = users.map((itemReview) => (
-		<div className="Item">
-			<img src="https://i.ibb.co/rw7hdq5/randog.png" alt="randog" border="0" />
-			<div className="User">
-				<h3> {itemReview.name} </h3>
-				<p> {itemReview.review} </p>
-			</div>
-		</div>
-	));
-	return (
-		<div className="Testimonial-box">
-			<h2>Reviews</h2>
-			{listReview}
+			<ProductInfo
+				isDiscount="yes"
+				name="Razer Blackwidow"
+				category="Mechanical keyboard"
+			/>
+			<ReviewsItem />
 		</div>
 	);
 }
@@ -61,9 +32,9 @@ function AddToCart(e) {
 }
 
 function CheckDiscount(props) {
-	const { isDiscount } = props;
+	const { isDiscount, discount } = props;
 	if (isDiscount === "yes") {
-		return <p>Diskon 50% Off</p>;
+		return <p>Diskon {discount}% Off</p>;
 	} else {
 		return <p>Tidak ada diskon</p>;
 	}
@@ -73,14 +44,16 @@ function ProductInfo(props) {
 	const price = "900000";
 	const { category, name, isDiscount } = props;
 	const benefits = ["Waterr resistant", "comfy", "auto fit"];
-	const listBenefits = benefits.map((itemBenefit) => <li> {itemBenefit} </li>);
+	const listBenefits = benefits.map((itemBenefit) => (
+		<li key={itemBenefit}> {itemBenefit} </li>
+	));
 	return (
 		<div>
 			<div className="Deskripsi">
 				<p className="Cate">{category}</p>
 				<h1 className="Title">{name}</h1>
 				<p className="Price"> IDR {price} </p>
-				<CheckDiscount isDiscount={isDiscount} />
+				<CheckDiscount isDiscount={isDiscount} discount={50} />
 				<p className="Info">
 					The BlackWidow X is a new keyboard series, introduced by Razer as a
 					budget friendly option in March 2016. The Razer BlackWidow X Ultimate
@@ -89,15 +62,17 @@ function ProductInfo(props) {
 					model is cheaper than the original model. In a lot of stores, the the
 					BlackWidow X is actually more expensive than the BlackWidow Ultimate.
 				</p>
-				<ul>
-					<li>{listBenefits}</li>
-				</ul>
-				<a onClick={(e) => AddToCart(name, e)} href="#">
+				<ul>{listBenefits}</ul>
+				<button onClick={(e) => AddToCart(name, e)} href="#">
 					Add to Cart
-				</a>
+				</button>
 			</div>
 		</div>
 	);
 }
+
+CheckDiscount.propTypes = {
+	discount: propTypes.number.isRequired
+};
 
 export default App;
